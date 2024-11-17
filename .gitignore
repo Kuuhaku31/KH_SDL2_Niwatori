@@ -4,4 +4,6 @@ build
 lib
 resources
 
+src/test
+
 ignore
