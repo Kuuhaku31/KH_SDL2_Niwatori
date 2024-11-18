@@ -6,10 +6,13 @@ add_subdirectory(base)
 add_subdirectory(test/testA)
 
 # 查找当前目录下的所有源文件
-# 并将名称保存到 DIR_LIB_SRCS 变量
-aux_source_directory(. DIR_LIB_SRCS)
+# 并将名称保存到 SOURCEFILES 变量
+aux_source_directory(. SOURCEFILES)
 
-add_executable(${PROJECT_NAME} main.cpp)
+# 打印源文件
+message(STATUS "main srcs: ${SOURCEFILES}")
+
+add_executable(${PROJECT_NAME} ${SOURCEFILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/base)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/manager)

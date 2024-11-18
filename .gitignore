@@ -3,6 +3,7 @@ bin
 build
 lib
 resources
+config
 
 src/test
 
