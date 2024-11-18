@@ -7,13 +7,13 @@ template<typename Tem>
 class Manager
 {
 public:
-    static Tem* instance()
+    static Tem& Instance()
     {
         if(manager == nullptr)
         {
             manager = new Tem();
         }
-        return manager;
+        return *manager;
     }
 
 protected:
