@@ -14,7 +14,4 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_Dir}/include)
 # 添加链接库路径
 target_link_directories(${PROJECT_NAME} PUBLIC ${SDL2_Dir}/lib/x64)
 
-target_link_libraries(
-    ${PROJECT_NAME}
-    SDL2
-)
+target_link_libraries(${PROJECT_NAME} SDL2)

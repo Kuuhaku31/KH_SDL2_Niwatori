@@ -16,8 +16,10 @@ set(SDL2_mixer_Dir ${CMAKE_SOURCE_DIR}/lib/SDL2_mixer)
 set(SDL2_gfx_Dir ${CMAKE_SOURCE_DIR}/lib/SDL2_gfx)
 set(cJson_Dir ${CMAKE_SOURCE_DIR}/lib/cJson)
 
-set(Manager_Dir ${CMAKE_SOURCE_DIR}/src/manager)
 set(Base_Dir ${CMAKE_SOURCE_DIR}/src/base)
+set(Manager_Dir ${CMAKE_SOURCE_DIR}/src/manager)
+set(Map_Dir ${CMAKE_SOURCE_DIR}/src/map)
+set(Enemy_Dir ${CMAKE_SOURCE_DIR}/src/enemy)
 
 # 设置输出路径
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
