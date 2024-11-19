@@ -23,7 +23,7 @@ public:
     void set_on_finished(std::function<void()> f); // 设置动画结束回调
 
     // 利用一个纹理添加帧
-    void add_frame(SDL_Texture* tex, int num_x, int num_y, std::vector<int>& idx_list);
+    void add_frame(SDL_Texture* tex, int num_x, int num_y, const std::vector<int>& idx_list);
 
     void on_update(double dt);                                                          // 更新
     void on_render(SDL_Renderer* renderer, const SDL_Point& pos_dis, double angle = 0); // 渲染

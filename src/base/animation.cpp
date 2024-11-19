@@ -52,7 +52,7 @@ Animation::set_on_finished(std::function<void()> f)
 }
 
 void
-Animation::add_frame(SDL_Texture* tex, int num_x, int num_y, std::vector<int>& idx_list)
+Animation::add_frame(SDL_Texture* tex, int num_x, int num_y, const std::vector<int>& idx_list)
 {
     texture = tex;
 

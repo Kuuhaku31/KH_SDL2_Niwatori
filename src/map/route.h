@@ -8,6 +8,7 @@
 #include "SDL.h"
 #include <vector>
 
+// 路径类
 class Route
 {
 public:

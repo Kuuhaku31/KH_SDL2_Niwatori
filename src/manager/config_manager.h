@@ -80,10 +80,10 @@ public:
     TowerTemplate gunner_template;
 
     EnemyTemplate slim_template;
-    EnemyTemplate king_slime_template;
-    EnemyTemplate skeleton;
+    EnemyTemplate king_slim_template;
+    EnemyTemplate skeleton_template;
     EnemyTemplate goblin_template;
-    EnemyTemplate goblin_priest;
+    EnemyTemplate goblin_priest_template;
 
     const double num_initial_hp    = 10;
     const double num_initial_coin  = 100;
@@ -269,11 +269,11 @@ public:
         parse_tower_template(axeman_template, cJSON_GetObjectItem(json_tower, "axeman")); // 解析斧手模板
         parse_tower_template(gunner_template, cJSON_GetObjectItem(json_tower, "gunner")); // 解析枪手模板
 
-        parse_enemy_template(slim_template, cJSON_GetObjectItem(json_enemy, "slim"));             // 解析史莱姆模板
-        parse_enemy_template(king_slime_template, cJSON_GetObjectItem(json_enemy, "king_slime")); // 解析史莱姆王模板
-        parse_enemy_template(skeleton, cJSON_GetObjectItem(json_enemy, "skeleton"));              // 解析骷髅模板
-        parse_enemy_template(goblin_template, cJSON_GetObjectItem(json_enemy, "goblin"));         // 解析哥布林模板
-        parse_enemy_template(goblin_priest, cJSON_GetObjectItem(json_enemy, "goblin_priest"));    // 解析哥布林牧师模板
+        parse_enemy_template(slim_template, cJSON_GetObjectItem(json_enemy, "slim"));                   // 解析史莱姆模板
+        parse_enemy_template(king_slim_template, cJSON_GetObjectItem(json_enemy, "king_slime"));        // 解析史莱姆王模板
+        parse_enemy_template(skeleton_template, cJSON_GetObjectItem(json_enemy, "skeleton"));           // 解析骷髅模板
+        parse_enemy_template(goblin_template, cJSON_GetObjectItem(json_enemy, "goblin"));               // 解析哥布林模板
+        parse_enemy_template(goblin_priest_template, cJSON_GetObjectItem(json_enemy, "goblin_priest")); // 解析哥布林牧师模板
 
         cJSON_Delete(json_root); // 释放内存
         return true;
