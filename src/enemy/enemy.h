@@ -19,7 +19,7 @@ public:
     void On_update(double delta_time);
     void On_render(SDL_Renderer* renderer);
 
-    bool Can_move() const; // 是否可以移动
+    bool Can_remove() const; // 是否可以移除
 
     double Get_route_process() const; // 获取路径进度
 

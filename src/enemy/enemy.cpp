@@ -171,7 +171,7 @@ Enemy::On_render(SDL_Renderer* renderer)
 }
 
 bool
-Enemy::Can_move() const
+Enemy::Can_remove() const
 {
     return !is_alive;
 }
