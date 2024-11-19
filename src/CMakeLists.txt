@@ -8,14 +8,18 @@ add_subdirectory(test/testA)
 # 查找当前目录下的所有源文件
 # 并将名称保存到 SOURCEFILES 变量
 aux_source_directory(. SOURCEFILES)
+aux_source_directory(../lib/cJSON SOURCEFILES)
 
 # 打印源文件
 message(STATUS "main srcs: ${SOURCEFILES}")
 
 add_executable(${PROJECT_NAME} ${SOURCEFILES})
 
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/base)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/manager)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/map)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/enemy)
 
 # 添加头文件
 target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_Dir}/include)

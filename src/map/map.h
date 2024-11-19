@@ -34,22 +34,22 @@ public:
             std::string str_line;
             while(std::getline(file, str_line)) // 逐行读取
             {
-                std::istringstream iss(str_line);
-
-                str_line = trim_str(str_line);
+                str_line = trim_str(str_line); // 处理前后空白字符
                 if(str_line.empty()) continue;
 
                 idx_x = -1, idx_y++;
                 taile_map_temp.emplace_back();
 
-                std::string       str_tile;
-                std::stringstream str_stream(str_tile);
-                while(std::getline(str_stream, str_tile, ',')) // 逐个读取
+                std::istringstream iss_line(str_line);
+
+                std::string str_tile;
+                while(std::getline(iss_line, str_tile, ',')) // 逐个读取
                 {
                     idx_x++;
                     taile_map_temp[idx_y].emplace_back();
                     Tile& tile = taile_map_temp[idx_y].back();
 
+                    str_tile = trim_str(str_tile); // 处理前后空白字符
                     load_tile_from_string(tile, str_tile);
                 }
             }
@@ -94,6 +94,37 @@ public:
         return tile_map.size();
     }
 
+    const TileMap&
+    Get_tile_map() const
+    {
+        return tile_map;
+    }
+
+    const SDL_Point&
+    Get_idx_home() const
+    {
+        return idx_home;
+    }
+
+    const SpawnRouteMap&
+    Get_spawn_route_map() const
+    {
+        return spawn_route_map;
+    }
+
+    void
+    Place_tower(const SDL_Point& idx_tile)
+    {
+        if(idx_tile.x < 0 || idx_tile.x >= Get_map_width() || idx_tile.y < 0 || idx_tile.y >= Get_map_height())
+        {
+            return;
+        }
+        else
+        {
+            tile_map[idx_tile.y][idx_tile.x].has_tower = true;
+        }
+    }
+
 private:
     TileMap tile_map;
 
@@ -119,18 +150,16 @@ private:
     void
     load_tile_from_string(Tile& tile, const std::string& str_tile)
     {
-        std::string str_tidy = trim_str(str_tile);
-
         std::string       str_value;
         std::vector<int>  values;
-        std::stringstream str_stream(str_tidy);
+        std::stringstream str_stream(str_tile);
 
         while(std::getline(str_stream, str_value, '\\'))
         {
             int value = 0;
             try // 将字符串转换为整数
             {
-                std::stoi(str_value);
+                value = std::stoi(str_value);
             }
             catch(const std::invalid_argument&)
             {

@@ -18,7 +18,7 @@ struct Tile
         Right
     };
 
-    int       terrain    = 0;  // 地形
+    int       terrain    = 0;  // 地形索引
     int       decoration = -1; // 装饰，-1表示没有装饰
     Direction direction  = Direction::None;
     int       special    = -1; // 特殊属性，-1表示没有特殊属性
