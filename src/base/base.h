@@ -111,3 +111,11 @@ protected:
     int  shape_high   = 0;
     int  shape_long   = 0;
 };
+
+enum class Facing
+{
+    Up,
+    Down,
+    Left,
+    Right
+};

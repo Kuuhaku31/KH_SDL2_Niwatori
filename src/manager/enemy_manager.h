@@ -21,6 +21,8 @@ public:
     void On_update(double delta_time);
     void On_render(SDL_Renderer* renderer);
 
+    EnemyList& Get_enemy_list();
+
     void Spawn_enemy(EnemyType enemy_type, int idx_spawn_point); // 传入敌人类型和位置索引
 
     bool Ckeck_cleared() const; // 检查是否无敌人了

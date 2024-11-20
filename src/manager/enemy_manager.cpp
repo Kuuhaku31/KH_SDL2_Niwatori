@@ -34,6 +34,12 @@ EnemyManager::On_render(SDL_Renderer* renderer)
     }
 }
 
+EnemyManager::EnemyList&
+EnemyManager::Get_enemy_list()
+{
+    return enemy_list;
+}
+
 void
 EnemyManager::Spawn_enemy(EnemyType enemy_type, int idx_spawn_point)
 {
