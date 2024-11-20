@@ -1,5 +1,5 @@
 
-// test.h
+// manager.h
 
 #pragma once
 
@@ -9,11 +9,11 @@ class Manager
 public:
     static Tem& Instance()
     {
-        if(manager == nullptr)
+        if(instance == nullptr)
         {
-            manager = new Tem();
+            instance = new Tem();
         }
-        return *manager;
+        return *instance;
     }
 
 protected:
@@ -23,8 +23,8 @@ protected:
     Manager& operator=(const Manager&) = delete; // 禁用赋值构造函数
 
 private:
-    static Tem* manager;
+    static Tem* instance;
 };
 
 template<typename Tem>
-Tem* Manager<Tem>::manager = nullptr;
+Tem* Manager<Tem>::instance = nullptr;
