@@ -215,3 +215,156 @@ Tower::on_fire()
 
     animation_current->reset();
 }
+
+
+// ArcherTower
+#define ARCHER_ANIMATION_IDX_IDLE_UP { 3, 4 }
+#define ARCHER_ANIMATION_IDX_IDLE_DOWN { 0, 1 }
+#define ARCHER_ANIMATION_IDX_IDLE_LEFT { 6, 7 }
+#define ARCHER_ANIMATION_IDX_IDLE_RIGHT { 9, 10 }
+#define ARCHER_ANIMATION_IDX_FIRE_UP { 15, 16, 17 }
+#define ARCHER_ANIMATION_IDX_FIRE_DOWN { 12, 13, 14 }
+#define ARCHER_ANIMATION_IDX_FIRE_LEFT { 18, 19, 20 }
+#define ARCHER_ANIMATION_IDX_FIRE_RIGHT { 21, 22, 23 }
+
+#define ARCHER_ANIMATION_TEXTURE_IDLE_UP_X_Y 3, 8
+#define ARCHER_ANIMATION_TEXTURE_IDLE_DOWN_X_Y 3, 8
+#define ARCHER_ANIMATION_TEXTURE_IDLE_LEFT_X_Y 3, 8
+#define ARCHER_ANIMATION_TEXTURE_IDLE_RIGHT_X_Y 3, 8
+#define ARCHER_ANIMATION_TEXTURE_FIRE_UP_X_Y 3, 8
+#define ARCHER_ANIMATION_TEXTURE_FIRE_DOWN_X_Y 3, 8
+#define ARCHER_ANIMATION_TEXTURE_FIRE_LEFT_X_Y 3, 8
+#define ARCHER_ANIMATION_TEXTURE_FIRE_RIGHT_X_Y 3, 8
+
+#define ARCHER_SIZE { 48, 48 }
+#define ARCHER_FIRE_SPEED 6
+
+ArcherTower::ArcherTower()
+{
+    static SDL_Texture* tex_archer = ResourcesManager::Instance().get_texture_pool().find(ResID::Tex_Archer)->second;
+
+    static const std::vector<int> idx_list_idle_up    = ARCHER_ANIMATION_IDX_IDLE_UP;
+    static const std::vector<int> idx_list_idle_down  = ARCHER_ANIMATION_IDX_IDLE_DOWN;
+    static const std::vector<int> idx_list_idle_left  = ARCHER_ANIMATION_IDX_IDLE_LEFT;
+    static const std::vector<int> idx_list_idle_right = ARCHER_ANIMATION_IDX_IDLE_RIGHT;
+    static const std::vector<int> idx_list_fire_up    = ARCHER_ANIMATION_IDX_FIRE_UP;
+    static const std::vector<int> idx_list_fire_down  = ARCHER_ANIMATION_IDX_FIRE_DOWN;
+    static const std::vector<int> idx_list_fire_left  = ARCHER_ANIMATION_IDX_FIRE_LEFT;
+    static const std::vector<int> idx_list_fire_right = ARCHER_ANIMATION_IDX_FIRE_RIGHT;
+
+    animation_idle_up.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_IDLE_UP_X_Y, idx_list_idle_up);
+    animation_idle_down.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_IDLE_DOWN_X_Y, idx_list_idle_down);
+    animation_idle_left.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_IDLE_LEFT_X_Y, idx_list_idle_left);
+    animation_idle_right.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_IDLE_RIGHT_X_Y, idx_list_idle_right);
+    animation_fire_up.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_FIRE_UP_X_Y, idx_list_fire_up);
+    animation_fire_down.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_FIRE_DOWN_X_Y, idx_list_fire_down);
+    animation_fire_left.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_FIRE_LEFT_X_Y, idx_list_fire_left);
+    animation_fire_right.add_frame(tex_archer, ARCHER_ANIMATION_TEXTURE_FIRE_RIGHT_X_Y, idx_list_fire_right);
+
+    tower_type  = TowerType::Archer;
+    bullet_type = BulletType::Arrow;
+    size        = ARCHER_SIZE;
+    fire_speed  = ARCHER_FIRE_SPEED;
+}
+
+
+// AxemanTower
+#define AXEMAN_ANIMATION_IDX_IDLE_UP { 3, 4 }
+#define AXEMAN_ANIMATION_IDX_IDLE_DOWN { 0, 1 }
+#define AXEMAN_ANIMATION_IDX_IDLE_LEFT { 9, 10 }
+#define AXEMAN_ANIMATION_IDX_IDLE_RIGHT { 6, 7 }
+#define AXEMAN_ANIMATION_IDX_FIRE_UP { 15, 16, 17 }
+#define AXEMAN_ANIMATION_IDX_FIRE_DOWN { 12, 13, 14 }
+#define AXEMAN_ANIMATION_IDX_FIRE_LEFT { 21, 22, 23 }
+#define AXEMAN_ANIMATION_IDX_FIRE_RIGHT { 18, 19, 20 }
+
+#define AXEMAN_ANIMATION_TEXTURE_IDLE_UP_X_Y 3, 8
+#define AXEMAN_ANIMATION_TEXTURE_IDLE_DOWN_X_Y 3, 8
+#define AXEMAN_ANIMATION_TEXTURE_IDLE_LEFT_X_Y 3, 8
+#define AXEMAN_ANIMATION_TEXTURE_IDLE_RIGHT_X_Y 3, 8
+#define AXEMAN_ANIMATION_TEXTURE_FIRE_UP_X_Y 3, 8
+#define AXEMAN_ANIMATION_TEXTURE_FIRE_DOWN_X_Y 3, 8
+#define AXEMAN_ANIMATION_TEXTURE_FIRE_LEFT_X_Y 3, 8
+#define AXEMAN_ANIMATION_TEXTURE_FIRE_RIGHT_X_Y 3, 8
+
+#define AXEMAN_SIZE { 48, 48 }
+#define AXEMAN_FIRE_SPEED 5
+
+AxemanTower::AxemanTower()
+{
+    static SDL_Texture* tex_axeman = ResourcesManager::Instance().get_texture_pool().find(ResID::Tex_Axeman)->second;
+
+    static const std::vector<int> idx_list_idle_up    = AXEMAN_ANIMATION_IDX_IDLE_UP;
+    static const std::vector<int> idx_list_idle_down  = AXEMAN_ANIMATION_IDX_IDLE_DOWN;
+    static const std::vector<int> idx_list_idle_left  = AXEMAN_ANIMATION_IDX_IDLE_LEFT;
+    static const std::vector<int> idx_list_idle_right = AXEMAN_ANIMATION_IDX_IDLE_RIGHT;
+    static const std::vector<int> idx_list_fire_up    = AXEMAN_ANIMATION_IDX_FIRE_UP;
+    static const std::vector<int> idx_list_fire_down  = AXEMAN_ANIMATION_IDX_FIRE_DOWN;
+    static const std::vector<int> idx_list_fire_left  = AXEMAN_ANIMATION_IDX_FIRE_LEFT;
+    static const std::vector<int> idx_list_fire_right = AXEMAN_ANIMATION_IDX_FIRE_RIGHT;
+
+    animation_idle_up.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_IDLE_UP_X_Y, idx_list_idle_up);
+    animation_idle_down.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_IDLE_DOWN_X_Y, idx_list_idle_down);
+    animation_idle_left.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_IDLE_LEFT_X_Y, idx_list_idle_left);
+    animation_idle_right.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_IDLE_RIGHT_X_Y, idx_list_idle_right);
+    animation_fire_up.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_FIRE_UP_X_Y, idx_list_fire_up);
+    animation_fire_down.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_FIRE_DOWN_X_Y, idx_list_fire_down);
+    animation_fire_left.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_FIRE_LEFT_X_Y, idx_list_fire_left);
+    animation_fire_right.add_frame(tex_axeman, AXEMAN_ANIMATION_TEXTURE_FIRE_RIGHT_X_Y, idx_list_fire_right);
+
+    tower_type  = TowerType::Axeman;
+    bullet_type = BulletType::Axe;
+    size        = AXEMAN_SIZE;
+    fire_speed  = AXEMAN_FIRE_SPEED;
+}
+
+
+// GunnerTower
+#define GUNNER_ANIMATION_IDX_IDLE_UP { 4, 5 }
+#define GUNNER_ANIMATION_IDX_IDLE_DOWN { 0, 1 }
+#define GUNNER_ANIMATION_IDX_IDLE_LEFT { 12, 13 }
+#define GUNNER_ANIMATION_IDX_IDLE_RIGHT { 8, 9 }
+#define GUNNER_ANIMATION_IDX_FIRE_UP { 20, 21, 22, 23 }
+#define GUNNER_ANIMATION_IDX_FIRE_DOWN { 16, 17, 18, 19 }
+#define GUNNER_ANIMATION_IDX_FIRE_LEFT { 28, 29, 30, 31 }
+#define GUNNER_ANIMATION_IDX_FIRE_RIGHT { 24, 25, 26, 27 }
+
+#define GUNNER_ANIMATION_TEXTURE_IDLE_UP_X_Y 4, 8
+#define GUNNER_ANIMATION_TEXTURE_IDLE_DOWN_X_Y 4, 8
+#define GUNNER_ANIMATION_TEXTURE_IDLE_LEFT_X_Y 4, 8
+#define GUNNER_ANIMATION_TEXTURE_IDLE_RIGHT_X_Y 4, 8
+#define GUNNER_ANIMATION_TEXTURE_FIRE_UP_X_Y 4, 8
+#define GUNNER_ANIMATION_TEXTURE_FIRE_DOWN_X_Y 4, 8
+#define GUNNER_ANIMATION_TEXTURE_FIRE_LEFT_X_Y 4, 8
+#define GUNNER_ANIMATION_TEXTURE_FIRE_RIGHT_X_Y 4, 8
+
+#define GUNNER_SIZE { 48, 48 }
+#define GUNNER_FIRE_SPEED 6
+
+GunnerTower::GunnerTower()
+{
+    static SDL_Texture* tex_gunner = ResourcesManager::Instance().get_texture_pool().find(ResID::Tex_Gunner)->second;
+
+    static const std::vector<int> idx_list_idle_up    = GUNNER_ANIMATION_IDX_IDLE_UP;
+    static const std::vector<int> idx_list_idle_down  = GUNNER_ANIMATION_IDX_IDLE_DOWN;
+    static const std::vector<int> idx_list_idle_left  = GUNNER_ANIMATION_IDX_IDLE_LEFT;
+    static const std::vector<int> idx_list_idle_right = GUNNER_ANIMATION_IDX_IDLE_RIGHT;
+    static const std::vector<int> idx_list_fire_up    = GUNNER_ANIMATION_IDX_FIRE_UP;
+    static const std::vector<int> idx_list_fire_down  = GUNNER_ANIMATION_IDX_FIRE_DOWN;
+    static const std::vector<int> idx_list_fire_left  = GUNNER_ANIMATION_IDX_FIRE_LEFT;
+    static const std::vector<int> idx_list_fire_right = GUNNER_ANIMATION_IDX_FIRE_RIGHT;
+
+    animation_idle_up.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_IDLE_UP_X_Y, idx_list_idle_up);
+    animation_idle_down.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_IDLE_DOWN_X_Y, idx_list_idle_down);
+    animation_idle_left.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_IDLE_LEFT_X_Y, idx_list_idle_left);
+    animation_idle_right.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_IDLE_RIGHT_X_Y, idx_list_idle_right);
+    animation_fire_up.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_FIRE_UP_X_Y, idx_list_fire_up);
+    animation_fire_down.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_FIRE_DOWN_X_Y, idx_list_fire_down);
+    animation_fire_left.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_FIRE_LEFT_X_Y, idx_list_fire_left);
+    animation_fire_right.add_frame(tex_gunner, GUNNER_ANIMATION_TEXTURE_FIRE_RIGHT_X_Y, idx_list_fire_right);
+
+    tower_type  = TowerType::Gunner;
+    bullet_type = BulletType::Shell;
+    size        = GUNNER_SIZE;
+    fire_speed  = GUNNER_FIRE_SPEED;
+}

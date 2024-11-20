@@ -56,3 +56,30 @@ private:
     Enemy* find_target_enemy(); // 找到找到进度最大的敌人
     void   on_fire();
 };
+
+
+// ArcherTower
+class ArcherTower : public Tower
+{
+public:
+    ArcherTower();
+    ~ArcherTower() = default;
+};
+
+
+// AxemanTower
+class AxemanTower : public Tower
+{
+public:
+    AxemanTower();
+    ~AxemanTower() = default;
+};
+
+
+// GunnerTower
+class GunnerTower : public Tower
+{
+public:
+    GunnerTower();
+    ~GunnerTower() = default;
+};
