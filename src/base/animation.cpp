@@ -59,22 +59,20 @@ Animation::add_frame(SDL_Texture* tex, int num_x, int num_y, const std::vector<i
     int tex_w = 0, tex_h = 0;
     SDL_QueryTexture(texture, nullptr, nullptr, &tex_w, &tex_h);
 
-    int frame_w = tex_w / num_x;
-    int frame_h = tex_h / num_y;
+    frame_wide = tex_w / num_x;
+    frame_high = tex_h / num_y;
 
-    int rect_src_list_size = num_x * num_y;
-
-    rect_src_list.resize(rect_src_list_size);
-    for(int i = 0; i < rect_src_list_size; i++)
+    rect_src_list.resize(idx_list.size());
+    for(int i = 0; i < idx_list.size(); i++)
     {
         int idx = idx_list[i];
 
         SDL_Rect& rect_src = rect_src_list[i];
 
-        rect_src.x = (idx % num_x) * frame_w;
-        rect_src.y = (idx / num_x) * frame_h;
-        rect_src.w = frame_w;
-        rect_src.h = frame_h;
+        rect_src.x = (idx % num_x) * frame_wide;
+        rect_src.y = (idx / num_x) * frame_high;
+        rect_src.w = frame_wide;
+        rect_src.h = frame_high;
     }
 }
 
@@ -91,8 +89,8 @@ Animation::on_render(SDL_Renderer* renderer, const SDL_Point& pos_dis, double an
 {
     static SDL_Rect rect_dst;
 
-    rect_dst.x = pos_dis.x + pos_dis.x;
-    rect_dst.y = pos_dis.y + pos_dis.y;
+    rect_dst.x = pos_dis.x;
+    rect_dst.y = pos_dis.y;
     rect_dst.w = frame_wide;
     rect_dst.h = frame_high;
 

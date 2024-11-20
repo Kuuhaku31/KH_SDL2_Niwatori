@@ -2,6 +2,7 @@
 // enemy_manager.cpp
 
 #include "config_manager.h"
+#include "enemy.h"
 #include "enemy_manager.h"
 #include "home_manager.h"
 
@@ -31,6 +32,93 @@ EnemyManager::On_render(SDL_Renderer* renderer)
     {
         enemy->On_render(renderer);
     }
+}
+
+void
+EnemyManager::Spawn_enemy(EnemyType enemy_type, int idx_spawn_point)
+{
+    static const SDL_Rect&           rect_tile_map   = ConfigManager::Instance().rect_tile_map;
+    static const Map::SpawnRouteMap& spawn_route_map = ConfigManager::Instance().map.Get_spawn_route_map();
+
+    static Vector2 position_spawn;
+
+    const auto& itor = spawn_route_map.find(idx_spawn_point);
+    if(itor == spawn_route_map.end()) return;
+
+    Enemy* enemy = nullptr;
+
+    switch(enemy_type)
+    {
+        case EnemyType::Slim:
+        {
+            enemy = new SlimEnemy();
+        }
+        break;
+
+        case EnemyType::KingSlime:
+        {
+            enemy = new KingSlimeEnemy();
+        }
+        break;
+
+        case EnemyType::Goblin:
+        {
+            enemy = new GoblinEnemy();
+        }
+        break;
+
+        case EnemyType::GoblinPriest:
+        {
+            enemy = new GoblinPriestEnemy();
+        }
+        break;
+
+        case EnemyType::Skeleton:
+        {
+            enemy = new SkeletonEnemy();
+        }
+        break;
+
+        default:
+        {
+            return;
+        }
+    }
+
+    auto func_on_skill_released = [&](Enemy* enemy_src) {
+        double recover_raduis = enemy_src->Get_recover_radius();
+        if(recover_raduis < 0) return;
+
+        const Vector2 pos_src = enemy_src->Get_position();
+        for(Enemy* enemy_dst : enemy_list) // 遍历所有敌人
+        {
+            const Vector2 pos_dst = enemy_dst->Get_position();
+
+            double distance = (pos_dst - pos_src).module();
+            if(distance <= recover_raduis) // 如果距离小于恢复半径
+            {
+                enemy_dst->Increase_hp(enemy_src->Get_recover_intensity());
+            }
+        }
+    };
+
+    enemy->Set_on_skill_released(func_on_skill_released);
+
+    const Route::IdxList& idx_list = itor->second.Get_idx_list();
+
+    position_spawn.vx = (double)(rect_tile_map.x + idx_list[0].x * SIZE_TILE + (SIZE_TILE >> 1));
+    position_spawn.vy = (double)(rect_tile_map.y + idx_list[0].y * SIZE_TILE + (SIZE_TILE >> 1));
+
+    enemy->Set_position(position_spawn);
+    enemy->Set_route(&itor->second);
+
+    enemy_list.push_back(enemy);
+}
+
+bool
+EnemyManager::Ckeck_cleared() const
+{
+    return enemy_list.empty();
 }
 
 void

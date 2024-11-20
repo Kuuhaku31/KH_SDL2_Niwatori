@@ -174,23 +174,23 @@ public:
                     if(json_spawn_enemy_type && json_spawn_enemy_type->type == cJSON_String) // 如果是字符串
                     {
                         const std::string str_enemy_type = json_spawn_enemy_type->valuestring;
-                        if(str_enemy_type == "slim")
+                        if(str_enemy_type == "Slim")
                         {
                             spawn_event.enemy_type = EnemyType::Slim;
                         }
-                        else if(str_enemy_type == "king_slime")
+                        else if(str_enemy_type == "KingSlim")
                         {
                             spawn_event.enemy_type = EnemyType::KingSlime;
                         }
-                        else if(str_enemy_type == "skeleton")
+                        else if(str_enemy_type == "Skeleton")
                         {
                             spawn_event.enemy_type = EnemyType::Skeleton;
                         }
-                        else if(str_enemy_type == "goblin")
+                        else if(str_enemy_type == "Goblin")
                         {
                             spawn_event.enemy_type = EnemyType::Goblin;
                         }
-                        else if(str_enemy_type == "goblin_priest")
+                        else if(str_enemy_type == "GoblinPriest")
                         {
                             spawn_event.enemy_type = EnemyType::GoblinPriest;
                         }

@@ -4,8 +4,10 @@
 #pragma once
 
 #include "config_manager.h"
+#include "enemy_manager.h"
 #include "manager.h"
 #include "resources_manager.h"
+#include "wave_manager.h"
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -42,7 +44,7 @@ public:
 
 
             // 更新
-            on_update();
+            on_update(delta);
 
             // 渲染
             on_render();
@@ -145,9 +147,16 @@ private:
         }
     }
 
-    void on_update()
+    void
+    on_update(double delta_time) // 更新
     {
-        // 更新
+        static ConfigManager& config_manager = ConfigManager::Instance();
+
+        if(!config_manager.is_game_over)
+        {
+            WaveManager::Instance().On_update(delta_time);
+            EnemyManager::Instance().On_update(delta_time);
+        }
     }
 
     void on_render()
@@ -160,6 +169,9 @@ private:
         static SDL_Rect&      rect_dis = config.rect_tile_map;
 
         SDL_RenderCopy(renderer, tex_tile_map, nullptr, &rect_dis); // 渲染地图纹理
+
+        EnemyManager::Instance().On_render(renderer); // 渲染敌人
+
 
         SDL_RenderPresent(renderer); // 显示渲染目标
     }
