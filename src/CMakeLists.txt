@@ -11,6 +11,8 @@ aux_source_directory(. SOURCEFILES)
 aux_source_directory(${Manager_Dir} SOURCEFILES)
 aux_source_directory(${Map_Dir} SOURCEFILES)
 aux_source_directory(${Enemy_Dir} SOURCEFILES)
+aux_source_directory(${Bullet_Dir} SOURCEFILES)
+aux_source_directory(${Tower_Dir} SOURCEFILES)
 
 aux_source_directory(${cJson_Dir} SOURCEFILES)
 
@@ -29,6 +31,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${Base_Dir})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Manager_Dir})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Map_Dir})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Enemy_Dir})
+target_include_directories(${PROJECT_NAME} PUBLIC ${Bullet_Dir})
+target_include_directories(${PROJECT_NAME} PUBLIC ${Tower_Dir})
 
 # 添加头文件
 target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_Dir}/include)

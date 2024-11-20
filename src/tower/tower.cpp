@@ -199,7 +199,6 @@ Tower::on_fire()
     timer_fire.restart();
 
     Vector2 direction = (target_enemy->Get_position() - position).unit();
-
     BulletManager::Instance().Fire_bullet(bullet_type, position, direction * fire_speed * SIZE_TILE, damage);
 
     if(abs(direction.vx) >= abs(direction.vy)) // 根据方向设置朝向

@@ -96,10 +96,10 @@ Bullet::On_update(double delta_time)
     position += velocity * delta_time;
 
     // 如果超出屏幕，使其无效
-    if(position.vx - size.vx / 2 <= rect_tile_map.x ||
-       position.vx + size.vx / 2 >= rect_tile_map.x + rect_tile_map.w ||
-       position.vy - size.vy / 2 <= rect_tile_map.y ||
-       position.vy + size.vy / 2 >= rect_tile_map.y + rect_tile_map.h)
+    if(position.vx + size.vx / 2 <= rect_tile_map.x ||
+       position.vx - size.vx / 2 >= rect_tile_map.x + rect_tile_map.w ||
+       position.vy - size.vy / 2 >= rect_tile_map.y + rect_tile_map.h ||
+       position.vy + size.vy / 2 <= rect_tile_map.y)
     {
         is_valid = false;
     }

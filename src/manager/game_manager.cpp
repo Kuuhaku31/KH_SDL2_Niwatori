@@ -6,6 +6,7 @@
 #include "config_manager.h"
 #include "enemy_manager.h"
 #include "resources_manager.h"
+#include "tower_manager.h"
 #include "wave_manager.h"
 
 #include "SDL_image.h"
@@ -15,6 +16,9 @@
 int
 GameManager::Run(int argc, char** argv)
 {
+    // debug
+    TowerManager::Instance().Place_tower(TowerType::Archer, { 5, 0 });
+
     Uint64 last_counter = SDL_GetPerformanceCounter();   // 获取CPU计数器
     Uint64 counter_freq = SDL_GetPerformanceFrequency(); // 获取CPU频率
     // 事件循环
@@ -134,6 +138,8 @@ GameManager::on_update(double delta_time) // 更新
     {
         WaveManager::Instance().On_update(delta_time);
         EnemyManager::Instance().On_update(delta_time);
+        BulletManager::Instance().On_update(delta_time);
+        TowerManager::Instance().On_update(delta_time);
     }
 }
 
@@ -149,7 +155,9 @@ GameManager::on_render()
 
     SDL_RenderCopy(renderer, tex_tile_map, nullptr, &rect_dis); // 渲染地图纹理
 
-    EnemyManager::Instance().On_render(renderer); // 渲染敌人
+    EnemyManager::Instance().On_render(renderer);  // 渲染敌人
+    BulletManager::Instance().On_render(renderer); // 渲染子弹
+    TowerManager::Instance().On_render(renderer);  // 渲染塔
 
 
     SDL_RenderPresent(renderer); // 显示渲染目标
