@@ -49,3 +49,39 @@ private:
     bool   is_collisional          = true;
     double angle_animation_rotated = 0;
 };
+
+
+// 箭矢子弹
+class ArrowBullet : public Bullet
+{
+public:
+    ArrowBullet();
+    ~ArrowBullet() = default;
+
+    void On_collide(Enemy* enemy) override;
+};
+
+// 斧头子弹
+class AxeBullet : public Bullet
+{
+public:
+    AxeBullet();
+    ~AxeBullet() = default;
+
+    void On_collide(Enemy* enemy) override;
+};
+
+// 炮弹
+class ShellBullet : public Bullet
+{
+public:
+    ShellBullet();
+    ~ShellBullet() = default;
+
+    void On_update(double delta_time) override;
+    void On_render(SDL_Renderer* renderer) override;
+    void On_collide(Enemy* enemy) override;
+
+private:
+    Animation animation_explosion;
+};
