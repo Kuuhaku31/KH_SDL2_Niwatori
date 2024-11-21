@@ -30,7 +30,7 @@ public:
 
 private:
     bool is_valid   = true;
-    bool is_jumping = false;
+    bool is_jumping = true;
 
     double gravity            = 490;
     double interval_jump      = 0.75;

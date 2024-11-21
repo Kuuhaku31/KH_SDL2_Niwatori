@@ -39,7 +39,7 @@ CoinProp::On_update(double delta_time)
     else
     {
         velocity.vx = 0;
-        velocity.vy = sin(SDL_GetTicks64() / 25.0) * 30; // 获取当前时间
+        velocity.vy = sin(SDL_GetTicks64() / 400.0) * 15; // 获取当前时间
     }
 
     position += velocity * delta_time;
@@ -48,8 +48,11 @@ CoinProp::On_update(double delta_time)
 void
 CoinProp::On_render(SDL_Renderer* renderer)
 {
-    static SDL_Rect     rect_dst = { 0, 0, (int)size.vx, (int)size.vy };
     static SDL_Texture* tex_coin = ResourcesManager::Instance().get_texture_pool().find(ResID::Tex_Coin)->second;
+    static SDL_Rect     rect_dst = { 0, 0, (int)size.vx, (int)size.vy };
+
+    rect_dst.x = (int)(position.vx - size.vx / 2);
+    rect_dst.y = (int)(position.vy - size.vy / 2);
 
     SDL_RenderCopy(renderer, tex_coin, nullptr, &rect_dst);
 }

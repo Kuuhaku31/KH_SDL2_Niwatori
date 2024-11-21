@@ -1,6 +1,8 @@
 
 // enemy_manager.cpp
 
+#include "bullet_manager.h"
+#include "coin_manager.h"
 #include "config_manager.h"
 #include "enemy.h"
 #include "enemy_manager.h"
@@ -23,6 +25,9 @@ EnemyManager::On_update(double delta_time)
     {
         enemy->On_update(delta_time);
     }
+    process_home_collision();
+    process_bullet_collision();
+    remove_invalid_enemy();
 }
 
 void
@@ -145,7 +150,10 @@ EnemyManager::process_home_collision()
         const Vector2& position = enemy->Get_position();
 
         // 判断是否碰撞到家
-        if(position.vx >= position_home_tile.vx && position.vy >= position_home_tile.vy && position.vx <= position_home_tile.vx + SIZE_TILE && position.vy <= position_home_tile.vy + SIZE_TILE)
+        if(position.vx >= position_home_tile.vx &&
+           position.vy >= position_home_tile.vy &&
+           position.vx <= position_home_tile.vx + SIZE_TILE &&
+           position.vy <= position_home_tile.vy + SIZE_TILE)
         {
             enemy->Make_invalid(); // 使敌人无效
 
@@ -157,6 +165,62 @@ EnemyManager::process_home_collision()
 void
 EnemyManager::process_bullet_collision()
 {
+    static BulletManager::BulletList& bullet_list = BulletManager::Instance().Get_bullet_list();
+
+    for(Enemy* enemy : enemy_list)
+    {
+        if(enemy->Can_remove()) continue;
+
+        const Vector2& enemy_size     = enemy->Get_size();
+        const Vector2& enemy_position = enemy->Get_position();
+
+        for(Bullet* bullet : bullet_list)
+        {
+            if(!bullet->Can_collide()) continue;
+
+            const Vector2& bullet_position = bullet->Get_position();
+
+            // 如果子弹中心点在敌人范围内
+            if(bullet_position.vx >= enemy_position.vx - enemy_size.vx / 2 &&
+               bullet_position.vx <= enemy_position.vx + enemy_size.vx / 2 &&
+               bullet_position.vy >= enemy_position.vy - enemy_size.vy / 2 &&
+               bullet_position.vy <= enemy_position.vy + enemy_size.vy / 2)
+            {
+                double damage       = bullet->Get_damage();
+                double damage_range = bullet->Get_damage_range();
+
+                if(damage_range < 0)
+                {
+                    enemy->Decrease_hp(damage);
+                    if(enemy->Can_remove())
+                    {
+                        try_spawn_coin_prop(enemy->Get_position(), enemy->Get_reward_ratio());
+                    }
+                }
+                else // 范围伤害
+                {
+                    for(Enemy* enemy_dst : enemy_list)
+                    {
+                        if(enemy_dst->Can_remove()) continue;
+
+                        const Vector2& target_enemy_pos = enemy_dst->Get_position();
+
+                        double distance = (target_enemy_pos - bullet_position).module();
+                        if(distance <= damage_range)
+                        {
+                            enemy_dst->Decrease_hp(damage);
+                            if(enemy_dst->Can_remove())
+                            {
+                                try_spawn_coin_prop(enemy_dst->Get_position(), enemy_dst->Get_reward_ratio());
+                            }
+                        }
+                    }
+                }
+
+                bullet->On_collide(enemy);
+            }
+        }
+    }
 }
 
 void
@@ -173,4 +237,15 @@ EnemyManager::remove_invalid_enemy()
 
     // 删除无效的敌人
     enemy_list.erase(std::remove_if(enemy_list.begin(), enemy_list.end(), f), enemy_list.end());
+}
+
+void
+EnemyManager::try_spawn_coin_prop(const Vector2& position, double ratio)
+{
+    static CoinManager& coin_manager = CoinManager::Instance();
+
+    if(rand() % 100 <= ratio * 100)
+    {
+        coin_manager.Spawn_coin(position);
+    }
 }

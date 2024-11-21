@@ -4,6 +4,7 @@
 #include "game_manager.h"
 
 #include "bullet_manager.h"
+#include "coin_manager.h"
 #include "config_manager.h"
 #include "enemy_manager.h"
 #include "resources_manager.h"
@@ -141,6 +142,7 @@ GameManager::on_update(double delta_time) // 更新
         EnemyManager::Instance().On_update(delta_time);
         BulletManager::Instance().On_update(delta_time);
         TowerManager::Instance().On_update(delta_time);
+        CoinManager::Instance().On_update(delta_time);
     }
 }
 
@@ -159,7 +161,7 @@ GameManager::on_render()
     EnemyManager::Instance().On_render(renderer);  // 渲染敌人
     BulletManager::Instance().On_render(renderer); // 渲染子弹
     TowerManager::Instance().On_render(renderer);  // 渲染塔
-
+    CoinManager::Instance().On_render(renderer);   // 渲染金币
 
     SDL_RenderPresent(renderer); // 显示渲染目标
 }
