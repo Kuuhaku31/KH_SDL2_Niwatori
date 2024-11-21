@@ -19,11 +19,12 @@
 int
 GameManager::Run(int argc, char** argv)
 {
-    // debug
-    TowerManager::Instance().Place_tower(TowerType::Archer, { 5, 0 });
+    // bgm
+    Mix_FadeInMusic(ResourcesManager::Instance().get_music_pool().find(ResID::Music_BGM)->second, -1, 1500);
 
     Uint64 last_counter = SDL_GetPerformanceCounter();   // 获取CPU计数器
     Uint64 counter_freq = SDL_GetPerformanceFrequency(); // 获取CPU频率
+
     // 事件循环
     while(is_running)
     {
@@ -89,6 +90,8 @@ GameManager::GameManager()
 
     place_panel   = new PlacePanel();
     upgrade_panel = new UpgradePanel();
+
+    banner = new Banner();
 }
 
 GameManager::~GameManager()
@@ -171,9 +174,31 @@ GameManager::on_input()
 void
 GameManager::on_update(double delta_time) // 更新
 {
+    static bool is_game_over_last_tick = false;
+
     static ConfigManager& config_manager = ConfigManager::Instance();
 
-    if(!config_manager.is_game_over)
+    static const ResourcesManager::SoundPool& sound_pool = ResourcesManager::Instance().get_sound_pool();
+
+    if(config_manager.is_game_over)
+    {
+        if(!is_game_over_last_tick)
+        {
+            Mix_FadeOutMusic(1500);
+            Mix_PlayChannel(-1, sound_pool.find(config_manager.is_game_win ? ResID::Sound_Win : ResID::Sound_Flash)->second, 0);
+        }
+        else
+        {
+            is_game_over_last_tick = true;
+        }
+
+        banner->On_update(delta_time);
+        if(banner->Is_end_display())
+        {
+            is_running = false;
+        }
+    }
+    else
     {
         PlayerManager::Instance().On_update(delta_time);
         WaveManager::Instance().On_update(delta_time);
@@ -207,7 +232,14 @@ GameManager::on_render()
     CoinManager::Instance().On_render(renderer);   // 渲染金币
     PlayerManager::Instance().On_render(renderer); // 渲染玩家
 
-    if(!config.is_game_over)
+    if(config.is_game_over)
+    {
+        int screen_width, screen_height = 0;
+        SDL_GetWindowSize(window, &screen_width, &screen_height);
+        banner->Set_center_position(Vector2(screen_width >> 1, screen_height >> 1));
+        banner->On_render(renderer);
+    }
+    else
     {
         place_panel->On_render(renderer);
         upgrade_panel->On_render(renderer);

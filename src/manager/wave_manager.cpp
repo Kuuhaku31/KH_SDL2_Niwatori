@@ -79,7 +79,7 @@ WaveManager::On_update(double delta_time)
         else
         {
             idx_spawn_event       = 0;
-            is_wave_started       = true;
+            is_wave_started       = false;
             is_spawned_last_enemy = false;
 
             const Wave& wave = config_manager.wave_list[idx_wave];

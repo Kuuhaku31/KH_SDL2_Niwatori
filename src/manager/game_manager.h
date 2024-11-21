@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "banner.h"
 #include "manager.h"
 #include "panel.h"
 #include "status_bar.h"
@@ -34,6 +35,8 @@ private:
 
     PlacePanel*   place_panel   = nullptr;
     UpgradePanel* upgrade_panel = nullptr;
+
+    Banner* banner = nullptr;
 
 private:
     void init_assert(bool flag, const char* msg);

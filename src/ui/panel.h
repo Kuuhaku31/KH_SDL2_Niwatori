@@ -91,8 +91,8 @@ protected:
     void on_click_right_area() override;
 
 private:
-    const SDL_Color color_region  = { 30, 80, 162, 175 }; // 边框颜色
-    const SDL_Color color_content = { 0, 149, 217, 175 }; // 内容颜色
+    const SDL_Color color_region  = { 30, 80, 162, 75 }; // 边框颜色
+    const SDL_Color color_content = { 0, 149, 217, 75 }; // 内容颜色
 
 private:
     int reg_top   = 0; // 边界大小
