@@ -7,6 +7,7 @@
 #include "coin_manager.h"
 #include "config_manager.h"
 #include "enemy_manager.h"
+#include "player_manager.h"
 #include "resources_manager.h"
 #include "tower_manager.h"
 #include "wave_manager.h"
@@ -124,6 +125,8 @@ GameManager::on_input()
     // 输入处理
     while(SDL_PollEvent(&event))
     {
+        PlayerManager::Instance().On_input(event);
+
         switch(event.type)
         {
             case SDL_QUIT:
@@ -172,6 +175,7 @@ GameManager::on_update(double delta_time) // 更新
 
     if(!config_manager.is_game_over)
     {
+        PlayerManager::Instance().On_update(delta_time);
         WaveManager::Instance().On_update(delta_time);
         EnemyManager::Instance().On_update(delta_time);
         BulletManager::Instance().On_update(delta_time);
@@ -201,6 +205,7 @@ GameManager::on_render()
     BulletManager::Instance().On_render(renderer); // 渲染子弹
     TowerManager::Instance().On_render(renderer);  // 渲染塔
     CoinManager::Instance().On_render(renderer);   // 渲染金币
+    PlayerManager::Instance().On_render(renderer); // 渲染玩家
 
     if(!config.is_game_over)
     {

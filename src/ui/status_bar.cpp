@@ -3,6 +3,8 @@
 
 #include "status_bar.h"
 
+#include "player_manager.h"
+
 void
 StatusBar::On_update(SDL_Renderer* renderer)
 {
@@ -104,8 +106,7 @@ StatusBar::On_render(SDL_Renderer* renderer) const
     rect_dst.w = width_mp_bar - 2 * width_border_mp_bar;
     rect_dst.h = height_mp_bar - 2 * width_border_mp_bar;
 
-    double process = 0.6;
-    //  PlayerManager::Instance().Get_current_mp() / 100;
+    double process = PlayerManager::Instance().Get_current_mp() / 100;
     roundedBoxRGBA(renderer,
                    rect_dst.x,
                    rect_dst.y,
