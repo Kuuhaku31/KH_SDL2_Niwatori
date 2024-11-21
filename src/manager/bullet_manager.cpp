@@ -62,7 +62,7 @@ BulletManager::Fire_bullet(BulletType type, const Vector2& pos, const Vector2& v
         default: bullet = new ArrowBullet(); break;
     }
 
-    bullet->Set_position(pos + Vector2{ SIZE_TILE / 2, 0 });
+    bullet->Set_position(pos);
     bullet->Set_velocity(vel);
     bullet->Set_damage(damage);
 

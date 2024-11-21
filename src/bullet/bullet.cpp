@@ -137,7 +137,7 @@ Bullet::On_collide(Enemy* enemy)
 // ArrowBullet
 #define ARROW_ANIMATION_IDX_LIST { 0, 1 }
 #define ARROW_TEXTURE_X_Y 2, 1
-#define ARROW_SIZE { 96, 48 }
+#define ARROW_SIZE { 48, 48 }
 
 ArrowBullet::ArrowBullet()
 {
@@ -174,7 +174,7 @@ ArrowBullet::On_collide(Enemy* enemy)
 //  AxeBullet
 #define AXE_ANIMATION_IDX_LIST { 0, 1, 2, 3, 4, 5, 6, 7 }
 #define AXE_TEXTURE_X_Y 4, 2
-#define AXE_SIZE { 96, 48 }
+#define AXE_SIZE { 48, 48 }
 
 AxeBullet::AxeBullet()
 {
@@ -214,7 +214,7 @@ AxeBullet::On_collide(Enemy* enemy)
 // ShellBullet
 #define SHELL_ANIMATION_IDX_LIST { 0, 1 }
 #define SHELL_TEXTURE_X_Y 2, 1
-#define SHELL_SIZE { 96, 48 }
+#define SHELL_SIZE { 48, 48 }
 
 #define EXPLODE_ANIMATION_IDX_LIST { 0, 1, 2, 3, 4 }
 #define EXPLODE_TEXTURE_X_Y 5, 1

@@ -3,6 +3,7 @@
 
 #include "game_manager.h"
 
+#include "bullet_manager.h"
 #include "config_manager.h"
 #include "enemy_manager.h"
 #include "resources_manager.h"
@@ -192,8 +193,8 @@ GameManager::generate_tile_map_texture()
     ConfigManager& config = ConfigManager::Instance();
 
     // 设置渲染目标位置
-    rect_tile_map.x = (config.basic_template.window_width - tex_tile_map_width) >> 1;
-    rect_tile_map.y = (config.basic_template.window_height - tex_tile_map_height) >> 1;
+    rect_tile_map.x = 0; // (config.basic_template.window_width - tex_tile_map_width) >> 1;
+    rect_tile_map.y = 0; //(config.basic_template.window_height - tex_tile_map_height) >> 1;
     rect_tile_map.w = tex_tile_map_width;
     rect_tile_map.h = tex_tile_map_height;
 
