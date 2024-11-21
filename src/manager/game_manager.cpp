@@ -26,10 +26,8 @@ GameManager::Run(int argc, char** argv)
     // 事件循环
     while(is_running)
     {
-        while(SDL_PollEvent(&event))
-        {
-            on_input();
-        }
+        // 输入
+        on_input();
 
         Uint64 current_counter = SDL_GetPerformanceCounter();
 
@@ -87,6 +85,9 @@ GameManager::GameManager()
     init_assert(generate_tile_map_texture(), (const char*)u8"生成地图纹理失败！");
 
     status_bar.Set_position(15, 15);
+
+    place_panel   = new PlacePanel();
+    upgrade_panel = new UpgradePanel();
 }
 
 GameManager::~GameManager()
@@ -115,6 +116,11 @@ GameManager::init_assert(bool flag, const char* msg)
 void
 GameManager::on_input()
 {
+    static ConfigManager& config_manager = ConfigManager::Instance();
+
+    static SDL_Point pos_center;
+    static SDL_Point idx_tile_selected;
+
     // 输入处理
     while(SDL_PollEvent(&event))
     {
@@ -123,12 +129,38 @@ GameManager::on_input()
             case SDL_QUIT:
             {
                 is_running = false;
+                break;
             }
-            break;
-            default:
+            case SDL_MOUSEBUTTONDOWN:
             {
+                if(config_manager.is_game_over) break;
+
+                if(get_cursor_idx_tile(idx_tile_selected, event.button.x, event.button.y))
+                {
+                    get_selected_tile_center_position(pos_center, idx_tile_selected);
+
+                    if(check_home(idx_tile_selected))
+                    {
+                        upgrade_panel->Set_idx_tile(idx_tile_selected);
+                        upgrade_panel->Set_center_pos(pos_center);
+                        upgrade_panel->Make_visible();
+                    }
+                    else if(can_place_tower(idx_tile_selected))
+                    {
+                        place_panel->Set_idx_tile(idx_tile_selected);
+                        place_panel->Set_center_pos(pos_center);
+                        place_panel->Make_visible();
+                    }
+                }
+                break;
             }
-            break;
+            default: break;
+        }
+
+        if(!config_manager.is_game_over)
+        {
+            place_panel->On_input(event);
+            upgrade_panel->On_input(event);
         }
     }
 }
@@ -147,6 +179,9 @@ GameManager::on_update(double delta_time) // 更新
         CoinManager::Instance().On_update(delta_time);
 
         status_bar.On_update(renderer);
+
+        place_panel->On_update(renderer);
+        upgrade_panel->On_update(renderer);
     }
 }
 
@@ -169,6 +204,8 @@ GameManager::on_render()
 
     if(!config.is_game_over)
     {
+        place_panel->On_render(renderer);
+        upgrade_panel->On_render(renderer);
         status_bar.On_render(renderer); // 渲染状态栏
     }
 
@@ -251,4 +288,54 @@ GameManager::generate_tile_map_texture()
     SDL_SetRenderTarget(renderer, nullptr); // 取消渲染目标
 
     return true;
+}
+
+bool
+GameManager::get_cursor_idx_tile(SDL_Point& idx_tile_selected, int screen_x, int screen_y)
+{
+    static const Map& map = ConfigManager::Instance().map;
+
+    static const SDL_Rect& rect_tile_map = ConfigManager::Instance().rect_tile_map;
+
+    if(screen_x < rect_tile_map.x ||
+       screen_x > rect_tile_map.x + rect_tile_map.w ||
+       screen_y < rect_tile_map.y ||
+       screen_y > rect_tile_map.y + rect_tile_map.h)
+    {
+        return false; // 如果鼠标不在地图范围内
+    }
+
+    // 计算鼠标所在瓦片索引，不允许超出地图范围
+    idx_tile_selected.x = std::min((screen_x - rect_tile_map.x) / SIZE_TILE, (int)map.Get_map_width() - 1);
+    idx_tile_selected.y = std::min((screen_y - rect_tile_map.y) / SIZE_TILE, (int)map.Get_map_height() - 1);
+
+    return true;
+}
+
+bool
+GameManager::can_place_tower(const SDL_Point& idx_tile_selected)
+{
+    static const Map& map = ConfigManager::Instance().map;
+
+    const Tile& tile = map.Get_tile_map()[idx_tile_selected.y][idx_tile_selected.x];
+
+    return (tile.decoration < 0 && tile.direction == Tile::Direction::None && !tile.has_tower);
+}
+
+bool
+GameManager::check_home(const SDL_Point& idx_tile_selected)
+{
+    static const Map&       map      = ConfigManager::Instance().map;
+    static const SDL_Point& idx_home = map.Get_idx_home();
+
+    return (idx_tile_selected.x == idx_home.x && idx_tile_selected.y == idx_home.y);
+}
+
+void
+GameManager::get_selected_tile_center_position(SDL_Point& center_pos, const SDL_Point& idx_tile_selected) const
+{
+    static const SDL_Rect& rect_tile_map = ConfigManager::Instance().rect_tile_map;
+
+    center_pos.x = rect_tile_map.x + idx_tile_selected.x * SIZE_TILE + (SIZE_TILE >> 1);
+    center_pos.y = rect_tile_map.y + idx_tile_selected.y * SIZE_TILE + (SIZE_TILE >> 1);
 }

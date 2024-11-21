@@ -4,6 +4,7 @@ project(main)
 add_subdirectory(base)
 
 add_subdirectory(test/testA)
+add_subdirectory(test/testB)
 
 # 查找当前目录下的所有源文件
 # 并将名称保存到 SOURCEFILES 变量

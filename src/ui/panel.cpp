@@ -3,8 +3,12 @@
 
 #include "panel.h"
 
+#include "coin_manager.h"
 #include "config_manager.h"
 #include "resources_manager.h"
+#include "tower_manager.h"
+
+#include "SDL2_gfxPrimitives.h"
 
 #include <string>
 
@@ -22,6 +26,8 @@ Panel::~Panel()
 void
 Panel::On_update(SDL_Renderer* renderer)
 {
+    if(!is_visible) return;
+
     static TTF_Font* font = ResourcesManager::Instance().get_font_pool().find(ResID::Font_Main)->second;
 
     if(hovered_target == HoveredTarget::None) return;
@@ -143,9 +149,9 @@ Panel::On_input(SDL_Event& event)
                 case HoveredTarget::Right: on_click_right_area(); break;
                 default: break;
             }
-            break;
-
             is_visible = false;
+
+            break;
         }
 
         default: break;
@@ -168,4 +174,154 @@ void
 Panel::Make_visible()
 {
     is_visible = true;
+}
+
+
+// PlacePanel
+PlacePanel::PlacePanel()
+{
+    static const ResourcesManager::TexturePool& texture_pool = ResourcesManager::Instance().get_texture_pool();
+
+    tex_idle          = texture_pool.find(ResID::Tex_UIPlaceIdle)->second;
+    tex_hovered_top   = texture_pool.find(ResID::Tex_UIPlaceHoveredTop)->second;
+    tex_hovered_left  = texture_pool.find(ResID::Tex_UIPlaceHoveredLeft)->second;
+    tex_hovered_right = texture_pool.find(ResID::Tex_UIPlaceHoveredRight)->second;
+}
+
+void
+PlacePanel::On_update(SDL_Renderer* renderer)
+{
+    static TowerManager& tower_manager = TowerManager::Instance();
+
+    val_top   = tower_manager.Get_place_cost(TowerType::Axeman);
+    val_left  = tower_manager.Get_place_cost(TowerType::Archer);
+    val_right = tower_manager.Get_place_cost(TowerType::Gunner);
+
+    reg_top   = tower_manager.Get_damage_range(TowerType::Axeman) * SIZE_TILE;
+    reg_left  = tower_manager.Get_damage_range(TowerType::Archer) * SIZE_TILE;
+    reg_right = tower_manager.Get_damage_range(TowerType::Gunner) * SIZE_TILE;
+
+    Panel::On_update(renderer);
+}
+
+void
+PlacePanel::On_render(SDL_Renderer* renderer) const
+{
+    if(!is_visible) return;
+
+    int reg = 0;
+    switch(hovered_target)
+    {
+        case HoveredTarget::Top: reg = reg_top; break;
+        case HoveredTarget::Left: reg = reg_left; break;
+        case HoveredTarget::Right: reg = reg_right; break;
+        default: break;
+    }
+
+    if(reg > 0)
+    {
+        // 填充圆形
+        filledCircleRGBA(renderer, center_pos.x, center_pos.y, reg, color_content.r, color_content.g, color_content.b, color_content.a);
+
+        // 画圆形
+        aacircleRGBA(renderer, center_pos.x, center_pos.y, reg, color_region.r, color_region.g, color_region.b, color_region.a);
+    }
+
+    Panel::On_render(renderer);
+}
+
+void
+PlacePanel::on_click_top_area()
+{
+    static CoinManager& coin_manager = CoinManager::Instance();
+
+    if(val_top <= coin_manager.Get_num_coin())
+    {
+        TowerManager::Instance().Place_tower(TowerType::Axeman, idx_tile_selected);
+        coin_manager.Decrease_coin(val_top);
+    }
+}
+
+void
+PlacePanel::on_click_left_area()
+{
+    static CoinManager& coin_manager = CoinManager::Instance();
+
+    if(val_left <= coin_manager.Get_num_coin())
+    {
+        TowerManager::Instance().Place_tower(TowerType::Archer, idx_tile_selected);
+        coin_manager.Decrease_coin(val_left);
+    }
+}
+
+void
+PlacePanel::on_click_right_area()
+{
+    static CoinManager& coin_manager = CoinManager::Instance();
+
+    if(val_right <= coin_manager.Get_num_coin())
+    {
+        TowerManager::Instance().Place_tower(TowerType::Gunner, idx_tile_selected);
+        coin_manager.Decrease_coin(val_right);
+    }
+}
+
+
+// UpgradePanel
+UpgradePanel::UpgradePanel()
+{
+    static const ResourcesManager::TexturePool& texture_pool = ResourcesManager::Instance().get_texture_pool();
+
+    tex_idle          = texture_pool.find(ResID::Tex_UIUpgradeIdle)->second;
+    tex_hovered_top   = texture_pool.find(ResID::Tex_UIUpgradeHoveredTop)->second;
+    tex_hovered_left  = texture_pool.find(ResID::Tex_UIUpgradeHoveredLeft)->second;
+    tex_hovered_right = texture_pool.find(ResID::Tex_UIUpgradeHoveredRight)->second;
+}
+
+void
+UpgradePanel::On_update(SDL_Renderer* renderer)
+{
+    static TowerManager& tower_manager = TowerManager::Instance();
+
+    val_top   = tower_manager.Get_upgrade_cost(TowerType::Axeman);
+    val_left  = tower_manager.Get_upgrade_cost(TowerType::Archer);
+    val_right = tower_manager.Get_upgrade_cost(TowerType::Gunner);
+
+    Panel::On_update(renderer);
+}
+
+void
+UpgradePanel::on_click_top_area()
+{
+    static CoinManager& coin_manager = CoinManager::Instance();
+
+    if(val_top > 0 && val_top <= coin_manager.Get_num_coin())
+    {
+        TowerManager::Instance().Upgrade_tower(TowerType::Axeman);
+        coin_manager.Decrease_coin(val_top);
+    }
+}
+
+void
+UpgradePanel::on_click_left_area()
+{
+    static CoinManager& coin_manager = CoinManager::Instance();
+
+    if(val_left > 0 && val_left <= coin_manager.Get_num_coin())
+    {
+        TowerManager::Instance().Upgrade_tower(TowerType::Archer);
+        coin_manager.Decrease_coin(val_left);
+    }
+}
+
+void
+UpgradePanel::on_click_right_area()
+{
+    static CoinManager& coin_manager = CoinManager::Instance();
+
+    if(val_right > 0 && val_right <= coin_manager.Get_num_coin())
+    {
+        TowerManager::Instance().Upgrade_tower(TowerType::Gunner);
+        coin_manager.Decrease_coin(val_right);
+    }
 }

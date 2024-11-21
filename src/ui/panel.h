@@ -73,3 +73,45 @@ private:
     SDL_Texture* tex_text_background = nullptr;
     SDL_Texture* tex_text_foreground = nullptr;
 };
+
+
+// PlacePanel
+class PlacePanel : public Panel
+{
+public:
+    PlacePanel();
+    ~PlacePanel() = default;
+
+    void On_update(SDL_Renderer* renderer) override;
+    void On_render(SDL_Renderer* renderer) const override;
+
+protected:
+    void on_click_top_area() override;
+    void on_click_left_area() override;
+    void on_click_right_area() override;
+
+private:
+    const SDL_Color color_region  = { 30, 80, 162, 175 }; // 边框颜色
+    const SDL_Color color_content = { 0, 149, 217, 175 }; // 内容颜色
+
+private:
+    int reg_top   = 0; // 边界大小
+    int reg_left  = 0;
+    int reg_right = 0;
+};
+
+
+// UpgradePanel
+class UpgradePanel : public Panel
+{
+public:
+    UpgradePanel();
+    ~UpgradePanel() = default;
+
+    void On_update(SDL_Renderer* renderer) override;
+
+protected:
+    void on_click_top_area() override;
+    void on_click_left_area() override;
+    void on_click_right_area() override;
+};

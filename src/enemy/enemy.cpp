@@ -373,6 +373,8 @@ SlimEnemy::SlimEnemy()
 
     hp    = max_hp;
     speed = max_speed;
+
+    timer_skill.set_wait_time(0);
 }
 
 
@@ -450,6 +452,8 @@ KingSlimeEnemy::KingSlimeEnemy()
 
     hp    = max_hp;
     speed = max_speed;
+
+    timer_skill.set_wait_time(recover_interval);
 }
 
 
@@ -527,6 +531,8 @@ SkeletonEnemy::SkeletonEnemy()
 
     hp    = max_hp;
     speed = max_speed;
+
+    timer_skill.set_wait_time(recover_interval);
 }
 
 
@@ -604,6 +610,8 @@ GoblinEnemy::GoblinEnemy()
 
     hp    = max_hp;
     speed = max_speed;
+
+    timer_skill.set_wait_time(recover_interval);
 }
 
 
