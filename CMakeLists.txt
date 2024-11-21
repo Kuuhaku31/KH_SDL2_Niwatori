@@ -22,6 +22,7 @@ set(Map_Dir ${CMAKE_SOURCE_DIR}/src/map)
 set(Enemy_Dir ${CMAKE_SOURCE_DIR}/src/enemy)
 set(Bullet_Dir ${CMAKE_SOURCE_DIR}/src/bullet)
 set(Tower_Dir ${CMAKE_SOURCE_DIR}/src/tower)
+set(Ui_Dir ${CMAKE_SOURCE_DIR}/src/ui)
 
 # 设置输出路径
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)

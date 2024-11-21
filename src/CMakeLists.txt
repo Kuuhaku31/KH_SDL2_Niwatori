@@ -13,8 +13,10 @@ aux_source_directory(${Map_Dir} SOURCEFILES)
 aux_source_directory(${Enemy_Dir} SOURCEFILES)
 aux_source_directory(${Bullet_Dir} SOURCEFILES)
 aux_source_directory(${Tower_Dir} SOURCEFILES)
+aux_source_directory(${Ui_Dir} SOURCEFILES)
 
 aux_source_directory(${cJson_Dir} SOURCEFILES)
+aux_source_directory(${SDL2_gfx_Dir} SOURCEFILES)
 
 message(STATUS "Manager_Dir: ${Manager_Dir}")
 message(STATUS "Map_Dir: ${Map_Dir}")
@@ -33,6 +35,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${Map_Dir})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Enemy_Dir})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Bullet_Dir})
 target_include_directories(${PROJECT_NAME} PUBLIC ${Tower_Dir})
+target_include_directories(${PROJECT_NAME} PUBLIC ${Ui_Dir})
 
 # 添加头文件
 target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_Dir}/include)

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "manager.h"
+#include "status_bar.h"
 
 #include "SDL.h"
 
@@ -22,6 +23,8 @@ protected:
 
 private:
     bool is_running = true;
+
+    StatusBar status_bar;
 
     SDL_Window*   window = nullptr;
     SDL_Event     event;

@@ -85,6 +85,8 @@ GameManager::GameManager()
     // 加载资源
     init_assert(ResourcesManager::Instance().load_from_file(renderer), (const char*)u8"加载游资源置失败！");
     init_assert(generate_tile_map_texture(), (const char*)u8"生成地图纹理失败！");
+
+    status_bar.Set_position(15, 15);
 }
 
 GameManager::~GameManager()
@@ -143,6 +145,8 @@ GameManager::on_update(double delta_time) // 更新
         BulletManager::Instance().On_update(delta_time);
         TowerManager::Instance().On_update(delta_time);
         CoinManager::Instance().On_update(delta_time);
+
+        status_bar.On_update(renderer);
     }
 }
 
@@ -162,6 +166,11 @@ GameManager::on_render()
     BulletManager::Instance().On_render(renderer); // 渲染子弹
     TowerManager::Instance().On_render(renderer);  // 渲染塔
     CoinManager::Instance().On_render(renderer);   // 渲染金币
+
+    if(!config.is_game_over)
+    {
+        status_bar.On_render(renderer); // 渲染状态栏
+    }
 
     SDL_RenderPresent(renderer); // 显示渲染目标
 }
